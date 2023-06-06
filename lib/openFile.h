@@ -1,7 +1,7 @@
 #include <fcntl.h>
 #include <unistd.h>
-void openFile();
-void openFile()
+bool openFile();
+bool openFile(char *file, int pid)
 {
   int fd;
   char buffer[100];
@@ -10,10 +10,16 @@ void openFile()
   // O_WRONLY: Solo escritura
   // write(fd,buffer, sizeof(buffer)-1);
   // O_APPEND: Escribe al final del archivo
-  fd = open("/home/snakydev/Projects/cvim-unix/test/openFile.txt", O_RDONLY);
+  // O_RDONLY: Solo lectura
+  char path[] = "/home/snakydev/Projects/cvim-unix/test/";
+  strcat(path, file);
+  printf("%s \n", path);
+  fd = open(path, O_RDONLY);
+  fd; // file
   if (fd == -1)
   {
     printf("Error al abrir el archivo\n");
+    return false;
   }
   else
   {
@@ -23,10 +29,12 @@ void openFile()
     if (nr_bytes == 0)
     {
       printf("Archivo Vacio\n");
+      return true;
     }
     else
     {
       printf("El numero de caracteres leidos es: %d\n, contenido: %s", (int)nr_bytes, buffer);
+      return true, fd;
     }
   }
 }
